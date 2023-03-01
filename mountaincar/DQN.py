@@ -8,25 +8,24 @@ from keras.optimizers import Adam
 import matplotlib.pyplot as plt
 from keras.activations import relu, linear
 import tensorflow as tf
-from datetime import datetime
-
-from get_reward import *
 
 class DQN:
 
     """ Implementation of deep q learning algorithm """
 
-    def __init__(self, action_space, state_space):
+    def __init__(self, action_space, state_space, param_dict):
 
         self.action_space = action_space
         self.state_space = state_space
-        self.epsilon = 1.0
-        self.gamma = .95
-        self.batch_size = 64
-        self.epsilon_min = .01
-        self.lr = 0.001
-        self.epsilon_decay = .995
-        self.memory = deque(maxlen=100000)
+        self.epsilon = param_dict['epsilon']
+        self.epsilon_min = param_dict['epsilon_min']
+        self.epsilon_decay = param_dict['epsilon_decay']
+
+        self.gamma = param_dict['gamma']
+        self.lr = param_dict['lr']
+        self.batch_size = param_dict['batch_size']
+        self.memory = deque(maxlen=param_dict['memory'])
+
         self.model = self.build_model()
 
     def build_model(self):
@@ -36,6 +35,7 @@ class DQN:
         model.add(Dense(32, activation=relu))
         model.add(Dense(self.action_space, activation=linear))
         model.compile(loss='mse', optimizer=Adam(learning_rate=self.lr))
+        # model.compile(loss=tf.keras.losses.Huber(), optimizer=Adam(learning_rate=self.lr))
         return model
 
     def remember(self, state, action, reward, next_state, done):
@@ -75,39 +75,3 @@ class DQN:
     
     def save(self, name):
         self.model.save(name)
-
-
-
-
-
-def train_dqn(episode, env, reward_type, date, time):
-
-    loss = []
-    step_count = []
-    agent = DQN(env.action_space.n, env.observation_space.shape[0])
-    for e in range(episode):
-        state = env.reset()[0] # added [0]
-        state = np.reshape(state, (1, 2))
-        score = 0
-        max_steps = 500 # changed from 1000
-        for i in range(max_steps):
-            action = agent.act(state)
-            env.render()
-            next_state, reward, done, _ = env.step(action)[0:4] # added [0:4]
-            reward = get_reward(state, next_state, reward_type)
-            score += reward
-            next_state = np.reshape(next_state, (1, 2))
-            agent.remember(state, action, reward, next_state, done)
-            state = next_state
-            agent.replay()
-            if done:
-                print("episode: {}/{} (reached goal), score: {}".format(e, episode, score))
-                if e == max(range(episode)):
-                    agent.save("MC_v3_models/model_{}_{}_{}_{}.h5".format(reward_type, date, time, e))
-                break
-        if not done:
-            print("episode: {}/{} (did not reach goal), score: {}".format(e, episode, score))
-        loss.append(score)
-        step_count.append(i)
-    return loss, step_count
-

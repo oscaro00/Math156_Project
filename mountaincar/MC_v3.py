@@ -1,25 +1,13 @@
-import gymnasium as gym
-import numpy as np
-import random
-from keras import Sequential
-from collections import deque
-from keras.layers import Dense
-from keras.optimizers import Adam
-import matplotlib.pyplot as plt
-from keras.activations import relu, linear
-import tensorflow as tf
-from datetime import datetime
+from train import *
 
-from DQN import *
-from get_reward import *
-
-# options: original, plus_velocity, human
+# ask user for reward type. options: original, plus_velocity, human
 reward_type = ""
 while reward_type not in ["original", "plus_velocity", "human"]:
     reward_type = input("What reward function do you want to train on? (original, plus_velocity, human)\n")
     if reward_type not in ["original", "plus_velocity", "human"]:
         print("Please try again.\n")
 
+# ask user for number of episodes
 episodes = 0
 while episodes < 1 or episodes % 1 != 0:
     episodes = input("How many episodes do you want to train on? (positive integer)\n")
@@ -40,47 +28,25 @@ while response not in ["y", "n"]:
     if response not in ["y", "n"]:
         print("Please try again.\n")
 
-
 if response == 'n':
     raise Exception("Incorrect training conditions.")
 
 
+
 ## Beginning the training code below
 
-curr_time = datetime.now()
-time_stamp = curr_time.timestamp()
-date_time = datetime.fromtimestamp(time_stamp)
-
-date = str(date_time)[0:10]
-time = str(date_time)[11:19].replace(":", '-') 
-
-
 env = gym.make('MountainCar-v0', render_mode = "human")
-#env.seed(134)
 np.random.seed(458)
 
+param_dict = {
+    'epsilon': 1.0,
+    'epsilon_min': .01,
+    'epsilon_decay': .995,
+    'gamma': .95,
+    'batch_size': 64,
+    'lr': .001,
+    'memory': 100000,
+    'max_steps': 500
+}
 
-
-
-print(env.observation_space)
-print(env.action_space)
-
-loss, step_count = train_dqn(episodes, env, reward_type, date, time)
-
-
-
-colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red"}
-
-plt.plot([i+1 for i in range(episodes)], loss, color = colors[reward_type])
-plt.ylabel('Score per Episode')
-plt.title("Mountain Car Final Score with {} Reward Function".format(reward_type))
-plt.savefig("./MC_v3_plots/loss_{}_{}_{}.png".format(reward_type, date, time))
-plt.show()
-
-
-
-plt.plot([i+1 for i in range(episodes)], step_count, color = colors[reward_type])
-plt.ylabel('Steps per Episode')
-plt.title("Mountain Car Steps per Episode with {} Reward Function".format(reward_type))
-plt.savefig("MC_v3_plots/step_{}_{}_{}.png".format(reward_type, date, time))
-plt.show()
+train_dqn(episodes, env, reward_type, param_dict)
