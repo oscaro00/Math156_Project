@@ -54,7 +54,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 print("episode: {}/{}, step: {}/{}, score:{}".format(e+1, episodes, i, max_steps, score))
             
             if done:
-                print("episode: {}/{} (reached goal), score: {}".format(e+1, episodes, score))
+                print("episode: {}/{} (episode done), score: {}".format(e+1, episodes, score))
                 print('time since start: %.3f s, '% (time.time() - start_time), end='')
                 print('time since last epoch: %.3f s'% (time.time() - last_time))
                 last_time = time.time()
@@ -72,7 +72,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
         score_hist.append(score)
         step_count.append(i)
 
-    colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red"}
+    colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red", "test" : "yellow"}
 
     # save plots
     plt.plot([i+1 for i in range(episodes)], score_hist, color = colors[reward_type])

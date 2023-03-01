@@ -2,9 +2,9 @@ from train import *
 
 # ask user for reward type. options: original, plus_velocity, human
 reward_type = ""
-while reward_type not in ["original", "plus_velocity", "human"]:
-    reward_type = input("What reward function do you want to train on? (original, plus_velocity, human)\n")
-    if reward_type not in ["original", "plus_velocity", "human"]:
+while reward_type not in ["original", "plus_velocity", "human", "test"]:
+    reward_type = input("What reward function do you want to train on? (original, plus_velocity, human, test)\n")
+    if reward_type not in ["original", "plus_velocity", "human", "test"]:
         print("Please try again.\n")
 
 # ask user for number of episodes

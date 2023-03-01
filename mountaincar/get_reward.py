@@ -30,5 +30,15 @@ def get_reward(state, next_state, reward_type):
         else:
             return 0
 
-    else:
-        return 0
+    elif reward_type=="test": #leave this space for further test mode
+        position=state[0][0]
+        velocity=state[0][1]
+        
+        reward=0
+        if position >= 0.5:
+            reward=100
+        else:
+            import math
+            #use tanh to map the value of position&veloicty to [-1,1]
+            reward=-0.2 + 2*(math.tanh(abs(velocity*10)+position)) #it currently performs very bad 
+        return reward
