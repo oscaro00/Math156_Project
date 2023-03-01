@@ -20,15 +20,9 @@ def train_dqn(episodes, env, reward_type, param_dict):
 
     # create timestamp and folders
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
-    path1 = f'./MC_v3_models/{timestamp}/'
-    path2 = f'./MC_v3_plots/{timestamp}/'
-    path3 = f'./MC_v3_logs/{timestamp}/'
+    path = f'./MC_v3_data/{timestamp}/'
     if not os.path.exists(path1):
         os.makedirs(path1)
-    if not os.path.exists(path2):
-        os.makedirs(path2)
-    if not os.path.exists(path3):
-        os.makedirs(path3)
 
     score_hist = []
     step_count = []
@@ -59,7 +53,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             if done:
                 print("episode: {}/{} (reached goal), score: {}".format(e+1, episodes, score))
                 if i < best_steps:
-                    agent.save(f'./MC_v3_models/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
+                    agent.save(f'./MC_v3_data/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
                 break
                 
         if not done:
@@ -75,14 +69,14 @@ def train_dqn(episodes, env, reward_type, param_dict):
     plt.xlabel('Episode')
     plt.ylabel('Score')
     plt.title("Mountain Car Final Score with {} Reward Function".format(reward_type))
-    plt.savefig(f'./MC_v3_plots/{timestamp}/scores_{reward_type}_{timestamp}.png')
+    plt.savefig(f'./MC_v3_data/{timestamp}/plot_scores_{reward_type}_{timestamp}.png')
     plt.clf()
 
     plt.plot([i+1 for i in range(episodes)], step_count, color = colors[reward_type])
     plt.xlabel('Episode')
     plt.ylabel('Steps')
     plt.title("Mountain Car Steps per Episode with {} Reward Function".format(reward_type))
-    plt.savefig(f'./MC_v3_plots/{timestamp}/steps_{reward_type}_{timestamp}.png')
+    plt.savefig(f'./MC_v3_data/{timestamp}/plot_steps_{reward_type}_{timestamp}.png')
     plt.clf()
 
     # save logs
@@ -99,5 +93,5 @@ def train_dqn(episodes, env, reward_type, param_dict):
     text = text + f"memory: {param_dict['memory']}\n"
     text = text + f"max_steps: {param_dict['max_steps']}"
 
-    with open(f"./MC_v3_logs/{timestamp}/log_{timestamp}.txt", 'w') as f:   
+    with open(f"./MC_v3_data/{timestamp}/log_{timestamp}.txt", 'w') as f:   
         f.write(text)
