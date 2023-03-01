@@ -18,7 +18,17 @@ from DQN import *
 
 def train_dqn(episodes, env, reward_type, param_dict):
 
+    # create timestamp and folders
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
+    path1 = f'./MC_v3_models/{timestamp}/'
+    path2 = f'./MC_v3_plots/{timestamp}/'
+    path3 = f'./MC_v3_logs/{timestamp}/'
+    if not os.path.exists(path1):
+        os.makedirs(path1)
+    if not os.path.exists(path2):
+        os.makedirs(path2)
+    if not os.path.exists(path3):
+        os.makedirs(path3)
 
     score_hist = []
     step_count = []
@@ -58,15 +68,9 @@ def train_dqn(episodes, env, reward_type, param_dict):
         score_hist.append(score)
         step_count.append(i)
 
-    path1 = f'./MC_v3_models/{timestamp}/'
-    path2 = f'./MC_v3_plots/{timestamp}/'
-    if not os.path.exists(path1):
-        os.makedirs(path1)
-    if not os.path.exists(path2):
-        os.makedirs(path2)
-
     colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red"}
 
+    # save plots
     plt.plot([i+1 for i in range(episodes)], score_hist, color = colors[reward_type])
     plt.xlabel('Episode')
     plt.ylabel('Score')
@@ -80,3 +84,20 @@ def train_dqn(episodes, env, reward_type, param_dict):
     plt.title("Mountain Car Steps per Episode with {} Reward Function".format(reward_type))
     plt.savefig(f'./MC_v3_plots/{timestamp}/steps_{reward_type}_{timestamp}.png')
     plt.clf()
+
+    # save logs
+    text = f'Training with {reward_type} reward on {episodes} episodes:\n'
+    text = text + f'Best score: {max(score_hist)}\n'
+    text = text + f'Minimum steps: {best_steps}\n\n'
+    text = text + 'Parameters:\n'
+    text = text + f"epsilon: {param_dict['epsilon']}\n"
+    text = text + f"epsilon_min: {param_dict['epsilon_min']}\n"
+    text = text + f"epsilon_decay: {param_dict['epsilon_decay']}\n"
+    text = text + f"gamma: {param_dict['gamma']}\n"
+    text = text + f"batch_size: {param_dict['batch_size']}\n"
+    text = text + f"lr: {param_dict['lr']}\n"
+    text = text + f"memory: {param_dict['memory']}\n"
+    text = text + f"max_steps: {param_dict['max_steps']}"
+
+    with open(f"./MC_v3_logs/{timestamp}/log_{timestamp}.txt", 'w') as f:   
+        f.write(text)
