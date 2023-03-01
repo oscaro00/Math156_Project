@@ -21,8 +21,8 @@ def train_dqn(episodes, env, reward_type, param_dict):
     # create timestamp and folders
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
     path = f'./MC_v3_data/{timestamp}/'
-    if not os.path.exists(path1):
-        os.makedirs(path1)
+    if not os.path.exists(path):
+        os.makedirs(path)
 
     score_hist = []
     step_count = []
