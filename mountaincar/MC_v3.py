@@ -2,9 +2,9 @@ from train import *
 
 # ask user for reward type. options: original, plus_velocity, human
 reward_type = ""
-while reward_type not in ["original", "plus_velocity", "human", "test"]:
-    reward_type = input("What reward function do you want to train on? (original, plus_velocity, human, test)\n")
-    if reward_type not in ["original", "plus_velocity", "human", "test"]:
+while reward_type not in ["original", "plus_velocity", "human", "test", "adibyte"]:
+    reward_type = input("What reward function do you want to train on? (original, plus_velocity, human, test, adibyte)\n")
+    if reward_type not in ["original", "plus_velocity", "human", "test", "adibyte"]:
         print("Please try again.\n")
 
 # ask user for number of episodes
@@ -41,7 +41,7 @@ np.random.seed(458)
 param_dict = {
     'epsilon': 1.0,
     'epsilon_min': .01,
-    'epsilon_decay': .995,
+    'epsilon_decay': .997,
     'gamma': .95,
     'batch_size': 64,
     'lr': .001,

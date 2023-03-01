@@ -43,36 +43,44 @@ def train_dqn(episodes, env, reward_type, param_dict):
             action = agent.act(state)
             env.render()
             next_state, reward, done, _ = env.step(action)[0:4] # added [0:4]
-            reward = get_reward(state, next_state, reward_type)
+            reward = get_reward(state, next_state, reward_type, agent.epsilon, agent.epsilon_min)
             score += reward
             next_state = np.reshape(next_state, (1, 2))
             agent.remember(state, action, reward, next_state, done)
             state = next_state
-            agent.replay()
+            agent.replay(score)
 
             if i % 50 == 0:
-                print("episode: {}/{}, step: {}/{}, score:{}".format(e+1, episodes, i, max_steps, score))
+                print("episode: %i/%i, step: %i/%i, score: %.3f, epsilon: %.5f" % (e+1, episodes, i, max_steps, score, agent.epsilon))
             
             if done:
-                print("episode: {}/{} (episode done), score: {}".format(e+1, episodes, score))
-                print('time since start: %.3f s, '% (time.time() - start_time), end='')
-                print('time since last epoch: %.3f s'% (time.time() - last_time))
+                # testing with done condition
+                if agent.epsilon >= agent.epsilon_min:
+                    agent.epsilon = agent.epsilon_min
+
+                print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
+                print('time since start: %is, ' % (time.time() - start_time), end='')
+                print('episode length: %is\n' % (time.time() - last_time))
                 last_time = time.time()
+                
                 if i < best_steps:
                     best_steps = i
                     agent.save(f'./MC_v3_data/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
                 break
                 
         if not done:
-            print("episode: {}/{} (did not reach goal), score: {}".format(e+1, episodes, score))
-            print('time since start: %.3f s, '% (time.time() - start_time), end='')
-            print('time since last epoch: %.3f s'% (time.time() - last_time))
+            # testing with not done condition
+            if agent.epsilon <= 0.5:
+                agent.epsilon = 0.5
+            print("episode: %i/%i (did not reach goal), score: %.3f" % (e+1, episodes, score))
+            print('time since start: %is, ' % (time.time() - start_time), end='')
+            print('episode length: %is\n' % (time.time() - last_time))
             last_time = time.time()
 
         score_hist.append(score)
         step_count.append(i)
 
-    colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red", "test" : "yellow"}
+    colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red", "test" : "yellow", "adibyte": "orange"}
 
     # save plots
     plt.plot([i+1 for i in range(episodes)], score_hist, color = colors[reward_type])
@@ -95,7 +103,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
     text = f'Training with {reward_type} reward on {episodes} episodes:\n'
     text = text + f'Best score: {max(score_hist)}\n'
     text = text + f'Minimum steps: {best_steps}\n\n'
-    text = text + 'Training time: %.3f s, Avg per episode: %.3f s\n' % (total_time, total_time / episodes)
+    text = text + 'Training time: %is, Avg per episode: %is\n' % (total_time, total_time / episodes)
     text = text + 'Parameters:\n'
     text = text + f"epsilon: {param_dict['epsilon']}\n"
     text = text + f"epsilon_min: {param_dict['epsilon_min']}\n"

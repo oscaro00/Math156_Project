@@ -48,7 +48,7 @@ class DQN:
         act_values = self.model.predict(state, verbose=0)
         return np.argmax(act_values[0])
 
-    def replay(self):
+    def replay(self, score):
 
         if len(self.memory) < self.batch_size:
             return
@@ -72,6 +72,7 @@ class DQN:
         self.model.fit(states, targets_full, epochs=1, verbose=0)
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
+
     
     def save(self, name):
         self.model.save(name)
