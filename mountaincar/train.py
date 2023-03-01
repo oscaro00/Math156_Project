@@ -40,7 +40,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
         max_steps = param_dict['max_steps'] # changed from 1000
 
         for i in range(max_steps):
-            # choose A from Q
+            # choose A from Q via eps-greedy policy
             action = agent.act(state)
             # env.render()
             # observe R, S' from environment
@@ -53,7 +53,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             agent.remember(state, action, reward, next_state, done)
             # update state
             state = next_state
-            # one step via Bellman's eqn
+            # one step of Q via Bellman's eqn
             agent.replay()
 
             if i % 50 == 0:
