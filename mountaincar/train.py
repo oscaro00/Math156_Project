@@ -10,6 +10,7 @@ from keras.activations import relu, linear
 import tensorflow as tf
 
 import os
+import time
 import datetime
 
 from get_reward import *
@@ -18,8 +19,10 @@ from DQN import *
 
 def train_dqn(episodes, env, reward_type, param_dict):
 
-    # create timestamp and folders
+    # create timestamp, time marker, and data folder
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
+    start_time = time.time()
+    last_time = time.time()
     path = f'./MC_v3_data/{timestamp}/'
     if not os.path.exists(path):
         os.makedirs(path)
@@ -52,12 +55,19 @@ def train_dqn(episodes, env, reward_type, param_dict):
             
             if done:
                 print("episode: {}/{} (reached goal), score: {}".format(e+1, episodes, score))
+                print('time since start: %.3f s, '% (time.time() - start_time), end='')
+                print('time since last epoch: %.3f s'% (time.time() - last_time))
+                last_time = time.time()
                 if i < best_steps:
+                    best_steps = i
                     agent.save(f'./MC_v3_data/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
                 break
                 
         if not done:
             print("episode: {}/{} (did not reach goal), score: {}".format(e+1, episodes, score))
+            print('time since start: %.3f s, '% (time.time() - start_time), end='')
+            print('time since last epoch: %.3f s'% (time.time() - last_time))
+            last_time = time.time()
 
         score_hist.append(score)
         step_count.append(i)
@@ -80,9 +90,12 @@ def train_dqn(episodes, env, reward_type, param_dict):
     plt.clf()
 
     # save logs
+    total_time = time.time() - start_time
+
     text = f'Training with {reward_type} reward on {episodes} episodes:\n'
     text = text + f'Best score: {max(score_hist)}\n'
     text = text + f'Minimum steps: {best_steps}\n\n'
+    text = text + 'Training time: %.3f s, Avg per episode: %.3f s\n' % (total_time, total_time / episodes)
     text = text + 'Parameters:\n'
     text = text + f"epsilon: {param_dict['epsilon']}\n"
     text = text + f"epsilon_min: {param_dict['epsilon_min']}\n"
