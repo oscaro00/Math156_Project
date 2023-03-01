@@ -40,15 +40,21 @@ def train_dqn(episodes, env, reward_type, param_dict):
         max_steps = param_dict['max_steps'] # changed from 1000
 
         for i in range(max_steps):
+            # choose A from Q
             action = agent.act(state)
-            env.render()
+            # env.render()
+            # observe R, S' from environment
             next_state, reward, done, _ = env.step(action)[0:4] # added [0:4]
+            # generate custom reward
             reward = get_reward(state, next_state, reward_type)
             score += reward
             next_state = np.reshape(next_state, (1, 2))
+            # store transition in replay buffer
             agent.remember(state, action, reward, next_state, done)
+            # update state
             state = next_state
-            agent.replay(score)
+            # one step via Bellman's eqn
+            agent.replay()
 
             if i % 50 == 0:
                 print("episode: %i/%i, step: %i/%i, score: %.3f, epsilon: %.5f" % (e+1, episodes, i, max_steps, score, agent.epsilon))

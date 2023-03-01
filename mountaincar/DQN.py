@@ -48,7 +48,7 @@ class DQN:
         act_values = self.model.predict(state, verbose=0)
         return np.argmax(act_values[0])
 
-    def replay(self, score):
+    def replay(self):
 
         if len(self.memory) < self.batch_size:
             return
