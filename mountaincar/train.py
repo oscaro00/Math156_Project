@@ -43,7 +43,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             action = agent.act(state)
             env.render()
             next_state, reward, done, _ = env.step(action)[0:4] # added [0:4]
-            reward = get_reward(state, next_state, reward_type, agent.epsilon, agent.epsilon_min)
+            reward = get_reward(state, next_state, reward_type)
             score += reward
             next_state = np.reshape(next_state, (1, 2))
             agent.remember(state, action, reward, next_state, done)
@@ -55,14 +55,15 @@ def train_dqn(episodes, env, reward_type, param_dict):
             
             if done:
                 # testing with done condition
-                if agent.epsilon >= agent.epsilon_min:
-                    agent.epsilon = agent.epsilon_min
+                # if agent.epsilon >= agent.epsilon_min:
+                #     agent.epsilon = agent.epsilon_min
 
                 print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
                 print('time since start: %is, ' % (time.time() - start_time), end='')
-                print('episode length: %is\n' % (time.time() - last_time))
+                print('episode length: %is, ' % (time.time() - last_time), end='')
+                print('steps taken: %i\n,' % (i))
                 last_time = time.time()
-                
+
                 if i < best_steps:
                     best_steps = i
                     agent.save(f'./MC_v3_data/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
@@ -70,8 +71,9 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 
         if not done:
             # testing with not done condition
-            if agent.epsilon <= 0.5:
-                agent.epsilon = 0.5
+            # if agent.epsilon <= 0.5:
+            #     agent.epsilon = 0.5
+
             print("episode: %i/%i (did not reach goal), score: %.3f" % (e+1, episodes, score))
             print('time since start: %is, ' % (time.time() - start_time), end='')
             print('episode length: %is\n' % (time.time() - last_time))

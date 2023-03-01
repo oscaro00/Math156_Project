@@ -41,7 +41,7 @@ np.random.seed(458)
 param_dict = {
     'epsilon': 1.0,
     'epsilon_min': .01,
-    'epsilon_decay': .997,
+    'epsilon_decay': .9995,
     'gamma': .95,
     'batch_size': 64,
     'lr': .001,

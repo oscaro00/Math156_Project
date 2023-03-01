@@ -1,4 +1,4 @@
-def get_reward(state, next_state, reward_type, ):
+def get_reward(state, next_state, reward_type):
 
     if reward_type == "original":
         if next_state[0] >= 0.5:
@@ -30,7 +30,7 @@ def get_reward(state, next_state, reward_type, ):
         else:
             return 0
 
-    elif reward_type=="test": #leave this space for further test mode
+    elif reward_type == "test": #leave this space for further test mode
         position=state[0][0]
         velocity=state[0][1]
         
@@ -53,17 +53,19 @@ def get_reward(state, next_state, reward_type, ):
         
         # give more reward if the cart reaches the flag in 200 steps
         if next_state[0] >= 0.5:
-            reward += 1000
+            reward += 10000
         # give more reward if cart is near flag
-        elif next_state[0] >= 0.35:
-            reward += 100
+        # elif next_state[0] >= 0.3:
+        #     reward += 100
+        # elif next_state[0] >= 0.1:
+        #     reward += 20
         else:
             # put a penalty if the no of time steps is more
-            reward -= 1 
+            reward -= 1
 
-        # once epsilon gets small, penalize everytime it crosses the valley
-        if next_state[0] == -0.5 and agent.epsilon <= agent.epsilon_min:
-            reward -= 10
+        # once the number of steps decreases a lot, penalize time more
+        # if best_steps <= max_steps / 2:
+        #     reward -= 5
 
         return reward
 
