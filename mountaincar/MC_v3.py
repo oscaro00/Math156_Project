@@ -81,6 +81,6 @@ plt.show()
 
 plt.plot([i+1 for i in range(episodes)], step_count, color = colors[reward_type])
 plt.ylabel('Steps per Episode')
-plt.title("Mountain Car Final Score with {} Reward Function".format(reward_type))
+plt.title("Mountain Car Steps per Episode with {} Reward Function".format(reward_type))
 plt.savefig("MC_v3_plots/step_{}_{}_{}.png".format(reward_type, date, time))
 plt.show()
