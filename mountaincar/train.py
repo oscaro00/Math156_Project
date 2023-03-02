@@ -11,9 +11,10 @@ import tensorflow as tf
 
 import os
 import time
+import pickle as pkl
 import datetime
 
-from get_reward import *
+from functions import *
 from DQN import *
 
 
@@ -31,38 +32,45 @@ def train_dqn(episodes, env, reward_type, param_dict):
     step_count = []
     best_steps = np.inf
 
+    # initialize agent
     agent = DQN(env.action_space.n, env.observation_space.shape[0], param_dict)
 
     for e in range(episodes):
         state = env.reset()[0] # added [0] to drop unnecessary dictionary
-        state = np.reshape(state, (1, 2))
+        # state = get_state(state) # uncomment to use buckets
+        state = np.reshape(state, (1, 2)) # reshape and return bucket index
         score = 0
         max_steps = param_dict['max_steps'] # changed from 1000
 
         for i in range(max_steps):
             # choose A from Q via eps-greedy policy
             action = agent.act(state)
-            # env.render()
+
             # observe R, S' from environment
             next_state, reward, done, _ = env.step(action)[0:4] # added [0:4] to drop unnecessary dictionary
+            # next_state = get_state(next_state) # uncomment to use buckets
+
             # generate custom reward
             reward += get_reward(state, next_state, reward_type)
             score += reward
-            next_state = np.reshape(next_state, (1, 2))
+            next_state = np.reshape(next_state, (1, 2)) # reshape and return bucket index
+
             # store transition in replay buffer
             agent.remember(state, action, reward, next_state, done)
-            # update state
-            state = next_state
+
             # one step of Q via Bellman's eqn
             agent.replay()
+
+            # update state
+            state = next_state
 
             if i % 50 == 0:
                 print("episode: %i/%i, step: %i/%i, score: %.3f, epsilon: %.5f" % (e+1, episodes, i, max_steps, score, agent.epsilon))
             
             if done:
                 # testing with done condition
-                # if agent.epsilon >= agent.epsilon_min:
-                #     agent.epsilon = agent.epsilon_min
+                if agent.epsilon >= agent.epsilon_min:
+                    agent.epsilon = agent.epsilon_min
 
                 print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
                 print('time since start: %is, ' % (time.time() - start_time), end='')
@@ -77,8 +85,8 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 
         if not done:
             # testing with not done condition
-            # if agent.epsilon <= 0.5:
-            #     agent.epsilon = 0.5
+            if agent.epsilon <= 0.8:
+                agent.epsilon = 0.8
 
             print("episode: %i/%i (did not reach goal), score: %.3f" % (e+1, episodes, score))
             print('time since start: %is, ' % (time.time() - start_time), end='')
@@ -105,6 +113,12 @@ def train_dqn(episodes, env, reward_type, param_dict):
     plt.savefig(f'./MC_v3_data/{timestamp}/plot_steps_{reward_type}_{timestamp}.png')
     plt.clf()
 
+    # save info arrays
+    arr_dict = {'score_hist': score_hist, 'step_count': step_count, 'best_steps': best_steps}
+
+    with open(f'./MC_v3_data/{timestamp}/arr_{timestamp}.pkl', 'wb') as fp:
+        pickle.dump(arr_dict, fp)
+
     # save logs
     total_time = time.time() - start_time
 
@@ -122,5 +136,5 @@ def train_dqn(episodes, env, reward_type, param_dict):
     text = text + f"memory: {param_dict['memory']}\n"
     text = text + f"max_steps: {param_dict['max_steps']}"
 
-    with open(f"./MC_v3_data/{timestamp}/log_{timestamp}.txt", 'w') as f:   
+    with open(f'./MC_v3_data/{timestamp}/log_{timestamp}.txt', 'w') as f:   
         f.write(text)
