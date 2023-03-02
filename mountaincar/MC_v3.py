@@ -43,11 +43,10 @@ param_dict = {
     'epsilon_min': .01,
     'epsilon_decay': .9995, # try .9999 or .997
     'gamma': .95,
-    'batch_size': 64,
+    'batch_size': 64, # try 128
     'lr': .001, # try .002
     'memory': 100000,
-    'max_steps': 500 # try 1000
+    'max_steps': 600 # try 1000
 }
 
-train_dqn(episodes, env, reward_type, param_dict)
 train_dqn(episodes, env, reward_type, param_dict)

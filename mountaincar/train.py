@@ -51,7 +51,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             # next_state = get_state(next_state) # uncomment to use buckets
 
             # generate custom reward
-            reward += get_reward(state, next_state, reward_type)
+            reward = get_reward(state, next_state, reward_type)
             score += reward
             next_state = np.reshape(next_state, (1, 2)) # reshape and return bucket index
 
