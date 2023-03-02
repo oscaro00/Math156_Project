@@ -23,7 +23,7 @@ def get_reward(state, next_state, reward_type):
             reward -= 1
         # if the next action goes higher or has greater speed, reward
         if next_state[0] > state[0][0] or abs(next_state[1]) > abs(state[0][1]):
-            reward += 1
+            reward += 1.5
             
         return reward 
     
