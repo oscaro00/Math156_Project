@@ -1,0 +1,14 @@
+Training with original reward on 100 episodes:
+Best score: 209.27251000643724
+Minimum steps: 114
+
+Training time: 2863s, Avg per episode: 28s
+Parameters:
+epsilon: 1.0
+epsilon_min: 0.01
+epsilon_decay: 0.997
+gamma: 0.95
+batch_size: 64
+lr: 0.001
+memory: 100000
+max_steps: 600
