@@ -117,7 +117,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
     arr_dict = {'score_hist': score_hist, 'step_count': step_count, 'best_steps': best_steps}
 
     with open(f'./MC_v3_data/{timestamp}/arr_{timestamp}.pkl', 'wb') as fp:
-        pickle.dump(arr_dict, fp)
+        pkl.dump(arr_dict, fp)
 
     # save logs
     total_time = time.time() - start_time
