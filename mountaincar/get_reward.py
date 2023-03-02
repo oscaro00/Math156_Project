@@ -67,7 +67,10 @@ def get_reward(state, next_state, reward_type):
         #     reward += 20
         else:
             # put a penalty if the no of time steps is more
-            reward -= 1
+
+            # commented out reward line here because training file not automatically penalizes each step with -1
+            #reward -= 1
+            reward -= 0
 
         # once the number of steps decreases a lot, penalize time more
         # if best_steps <= max_steps / 2:

@@ -46,7 +46,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             # observe R, S' from environment
             next_state, reward, done, _ = env.step(action)[0:4] # added [0:4] to drop unnecessary dictionary
             # generate custom reward
-            reward = get_reward(state, next_state, reward_type)
+            reward += get_reward(state, next_state, reward_type)
             score += reward
             next_state = np.reshape(next_state, (1, 2))
             # store transition in replay buffer
