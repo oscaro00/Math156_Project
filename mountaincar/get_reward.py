@@ -22,16 +22,16 @@ def get_reward(state, next_state, reward_type):
             print("Car has reached the goal")
             return 10
         # if slowing down and going higher right, reward
-        if next_state[0] > state[0][0] and next_state[0] > -0.525 and next_state[1] < state[0][1]:
+        if next_state[0] > state[0][0] and next_state[0] > -0.5 and next_state[1] < state[0][1]:
             return 2
         # if slowing down and going higher left, reward
-        if next_state[0] < state[0][0] and next_state[0] < -0.525 and next_state[1] > state[0][1]:
+        if next_state[0] < state[0][0] and next_state[0] < -0.5 and next_state[1] > state[0][1]:
             return 1
         # if speeding up right and going lower left, reward
-        if next_state[0] > state[0][0] and next_state[0] < -0.525 and next_state[1] > state[0][1]:
+        if next_state[0] > state[0][0] and next_state[0] < -0.5 and next_state[1] > state[0][1]:
             return 1
         # if speeding up left and going lower right, reward
-        if next_state[0] < state[0][0] and next_state[0] > -0.525 and next_state[1] < state[0][1]:
+        if next_state[0] < state[0][0] and next_state[0] > -0.5 and next_state[1] < state[0][1]:
             return 1
         else:
             return 0
