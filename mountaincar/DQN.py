@@ -34,8 +34,8 @@ class DQN:
         model.add(Dense(32, input_dim=self.state_space, activation=relu))
         model.add(Dense(32, activation=relu))
         model.add(Dense(self.action_space, activation=linear))
-        model.compile(loss='mse', optimizer=Adam(learning_rate=self.lr))
-        # model.compile(loss=tf.keras.losses.Huber(), optimizer=Adam(learning_rate=self.lr))
+        # model.compile(loss='mse', optimizer=Adam(learning_rate=self.lr))
+        model.compile(loss=tf.keras.losses.Huber(), optimizer=Adam(learning_rate=self.lr))
         return model
 
     def remember(self, state, action, reward, next_state, done):
