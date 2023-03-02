@@ -34,7 +34,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
     agent = DQN(env.action_space.n, env.observation_space.shape[0], param_dict)
 
     for e in range(episodes):
-        state = env.reset()[0] # added [0]
+        state = env.reset()[0] # added [0] to drop unnecessary dictionary
         state = np.reshape(state, (1, 2))
         score = 0
         max_steps = param_dict['max_steps'] # changed from 1000
@@ -44,7 +44,7 @@ def train_dqn(episodes, env, reward_type, param_dict):
             action = agent.act(state)
             # env.render()
             # observe R, S' from environment
-            next_state, reward, done, _ = env.step(action)[0:4] # added [0:4]
+            next_state, reward, done, _ = env.step(action)[0:4] # added [0:4] to drop unnecessary dictionary
             # generate custom reward
             reward = get_reward(state, next_state, reward_type)
             score += reward
