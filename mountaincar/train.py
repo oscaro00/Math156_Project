@@ -69,8 +69,8 @@ def train_dqn(episodes, env, reward_type, param_dict):
             
             if done:
                 # testing with done condition
-                if agent.epsilon >= agent.epsilon_min:
-                    agent.epsilon = agent.epsilon_min
+                # if agent.epsilon >= 0.3:#agent.epsilon_min:
+                #     agent.epsilon = 0.3#agent.epsilon_min
 
                 print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
                 print('time since start: %is, ' % (time.time() - start_time), end='')
@@ -85,8 +85,8 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 
         if not done:
             # testing with not done condition
-            if agent.epsilon <= 0.8:
-                agent.epsilon = 0.8
+            # if agent.epsilon <= 0.5:
+            #     agent.epsilon = 0.5
 
             print("episode: %i/%i (did not reach goal), score: %.3f" % (e+1, episodes, score))
             print('time since start: %is, ' % (time.time() - start_time), end='')

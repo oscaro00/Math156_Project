@@ -55,13 +55,13 @@ def get_reward(state, next_state, reward_type):
         reward = 0
 
         if next_state[1] > state[0][1] and next_state[1]>0 and state[0][1]>0:
-            reward += 1.5
+            reward += 2
         elif next_state[1] < state[0][1] and next_state[1]<=0 and state[0][1]<=0:
-            reward +=1.5
+            reward += 1
         
         # give more reward if the cart reaches the flag in 200 steps
         if next_state[0] >= 0.5:
-            reward += 10000
+            reward += 1000
         # give more reward if cart is near flag
         # elif next_state[0] >= 0.3:
         #     reward += 100
