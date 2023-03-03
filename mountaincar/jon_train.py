@@ -17,4 +17,4 @@ param_dict = {
 episodes = 100
 reward_type = 'adibyte'
 
-train_dqn(episodes, env, reward_type, param_dict, done_condition=[True, [0.1, 0.5]])
+train_dqn(episodes, env, reward_type, param_dict, done_condition=[True, [0.3, 0.5]])
