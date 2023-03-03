@@ -1,6 +1,6 @@
 import numpy as np
 
-def get_reward(state, next_state, reward_type):
+def get_reward(state, next_state, reward_type, step, max_steps):
 
     if reward_type == "original":
         reward = 0
@@ -66,21 +66,22 @@ def get_reward(state, next_state, reward_type):
         reward = 0
 
         if next_state[1] > state[0][1] and next_state[1]>0 and state[0][1]>0:
-            reward += 1.5
+            reward += 3
         elif next_state[1] < state[0][1] and next_state[1]<=0 and state[0][1]<=0:
             reward += 1.5
         
-        # give more reward if the cart reaches the flag
+        # give more reward if the cart reaches the flag & scale by number of steps
         if next_state[0] >= 0.5:
-            reward += 500
+            ratio = (max_steps - step) / max_steps
+            reward += 1000 + 1000*ratio**2
         # give more reward if cart is near flag
-        elif next_state[0] >= 0.3:
-            reward += 100
-        elif next_state[0] >= 0.1:
-            reward += 20
+        # elif next_state[0] >= 0.3:
+        #     reward += 100
+        # elif next_state[0] >= 0.1:
+        #     reward += 20
         else:
             # put a penalty if the no of time steps is more
-            reward -= 1
+            reward -= 1.5
 
         # once the number of steps decreases a lot, penalize time more
         # if best_steps <= max_steps / 2:

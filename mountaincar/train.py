@@ -51,7 +51,7 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
             # next_state = get_state(next_state) # uncomment to use buckets
 
             # generate custom reward
-            reward = get_reward(state, next_state, reward_type)
+            reward = get_reward(state, next_state, reward_type, i, max_steps)
             score += reward
             next_state = np.reshape(next_state, (1, 2)) # reshape and return bucket index
 
@@ -76,7 +76,7 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
                 print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
                 print('time since start: %is, ' % (time.time() - start_time), end='')
                 print('episode length: %is, ' % (time.time() - last_time), end='')
-                print('steps taken: %i\n,' % (i))
+                print('steps taken: %i\n' % (i))
                 last_time = time.time()
 
                 if i < best_steps:
@@ -136,7 +136,9 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
     text = text + f"batch_size: {param_dict['batch_size']}\n"
     text = text + f"lr: {param_dict['lr']}\n"
     text = text + f"memory: {param_dict['memory']}\n"
-    text = text + f"max_steps: {param_dict['max_steps']}"
+    text = text + f"max_steps: {param_dict['max_steps']}\n"
+    if done_condition:
+        text = text + f"done_condition: [{done_condition[1][0]},{done_condition[1][1]}]"
 
     with open(f'./MC_v3_data/{timestamp}/log_{timestamp}.txt', 'w') as f:   
         f.write(text)
