@@ -18,7 +18,7 @@ from functions import *
 from DQN import *
 
 
-def train_dqn(episodes, env, reward_type, param_dict):
+def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]):
 
     # create timestamp, time marker, and data folder
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
@@ -68,9 +68,10 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 print("episode: %i/%i, step: %i/%i, score: %.3f, epsilon: %.5f" % (e+1, episodes, i, max_steps, score, agent.epsilon))
             
             if done:
-                # testing with done condition
-                # if agent.epsilon >= 0.3:#agent.epsilon_min:
-                #     agent.epsilon = 0.3#agent.epsilon_min
+                if done_condition[0]:
+                    # testing with done condition
+                    if agent.epsilon >= done_condition[1][0]:#agent.epsilon_min:
+                        agent.epsilon = done_condition[1][0]#agent.epsilon_min
 
                 print("episode: %i/%i (reached goal), score: %.3f" % (e+1, episodes, score))
                 print('time since start: %is, ' % (time.time() - start_time), end='')
@@ -84,9 +85,10 @@ def train_dqn(episodes, env, reward_type, param_dict):
                 break
                 
         if not done:
-            # testing with not done condition
-            # if agent.epsilon <= 0.5:
-            #     agent.epsilon = 0.5
+            if done_condition[0]:
+                # testing with not done condition
+                if agent.epsilon <= done_condition[1][1]:
+                    agent.epsilon = done_condition[1][1]
 
             print("episode: %i/%i (did not reach goal), score: %.3f" % (e+1, episodes, score))
             print('time since start: %is, ' % (time.time() - start_time), end='')
