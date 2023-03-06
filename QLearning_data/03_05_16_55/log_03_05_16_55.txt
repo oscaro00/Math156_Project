@@ -1,0 +1,11 @@
+Training with Q-Learning on 2000 episodes:
+
+Parameters:
+Learning Rate: 0.2
+Discount: 0.9
+Initial Epsilon: 0.8
+
+Max score: -144.0
+Minimum steps: 220
+
+Final Epsilon: 2.2885447877041276e-14
