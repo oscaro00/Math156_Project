@@ -31,11 +31,14 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
     score_hist = []
     step_count = []
     best_steps = np.inf
+    best_step_data = []
 
     # initialize agent
     agent = DQN(env.action_space.n, env.observation_space.shape[0], param_dict)
 
     for e in range(episodes):
+        # initialize empty array to hold position and velocity data
+        step_data = []
         state = env.reset()[0] # added [0] to drop unnecessary dictionary
         # state = get_state(state) # uncomment to use buckets
         state = np.reshape(state, (1, 2)) # reshape and return bucket index
@@ -43,6 +46,9 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
         max_steps = param_dict['max_steps'] # changed from 1000
 
         for i in range(max_steps):
+            # add position and velocity data to step_data array
+            step_data.append([state[0][0],state[0][1]])
+
             # choose A from Q via eps-greedy policy
             action = agent.act(state)
 
@@ -81,6 +87,7 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
 
                 if i < best_steps:
                     best_steps = i
+                    best_step_data = step_data
                     agent.save(f'./MC_v3_data/{timestamp}/model_{reward_type}_{timestamp}_{best_steps}.h5')
                 break
                 
@@ -116,7 +123,7 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
     plt.clf()
 
     # save info arrays
-    arr_dict = {'score_hist': score_hist, 'step_count': step_count, 'best_steps': best_steps}
+    arr_dict = {'score_hist': score_hist, 'step_count': step_count, 'best_steps': best_steps, 'best_step_data': best_step_data}
 
     with open(f'./MC_v3_data/{timestamp}/arr_{timestamp}.pkl', 'wb') as fp:
         pkl.dump(arr_dict, fp)
