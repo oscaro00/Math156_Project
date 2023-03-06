@@ -18,7 +18,7 @@ from functions import *
 from DQN import *
 
 
-def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]):
+def train_dqn(episodes, env, reward_type, param_dict, done_condition=(False, [])):
 
     # create timestamp, time marker, and data folder
     timestamp = datetime.datetime.now().strftime("%m_%d_%H_%M")
@@ -144,7 +144,7 @@ def train_dqn(episodes, env, reward_type, param_dict, done_condition=[False, []]
     text = text + f"lr: {param_dict['lr']}\n"
     text = text + f"memory: {param_dict['memory']}\n"
     text = text + f"max_steps: {param_dict['max_steps']}\n"
-    if done_condition:
+    if done_condition[0]:
         text = text + f"done_condition: [{done_condition[1][0]},{done_condition[1][1]}]"
 
     with open(f'./MC_v3_data/{timestamp}/log_{timestamp}.txt', 'w') as f:   
