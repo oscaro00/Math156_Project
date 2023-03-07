@@ -66,14 +66,15 @@ def get_reward(state, next_state, reward_type, step, max_steps):
         reward = 0
 
         if next_state[1] > state[0][1] and next_state[1]>0 and state[0][1]>0:
-            reward += 3
+            reward += 1.5
         elif next_state[1] < state[0][1] and next_state[1]<=0 and state[0][1]<=0:
             reward += 1.5
         
         # give more reward if the cart reaches the flag & scale by number of steps
         if next_state[0] >= 0.5:
-            ratio = (max_steps - step) / max_steps
-            reward += 1000 + 1000*ratio**2
+            reward += 1000
+            # ratio = (max_steps - step) / max_steps
+            # reward += 1000 + 1000*ratio**2
         # give more reward if cart is near flag
         # elif next_state[0] >= 0.3:
         #     reward += 100
@@ -81,7 +82,7 @@ def get_reward(state, next_state, reward_type, step, max_steps):
         #     reward += 20
         else:
             # put a penalty if the no of time steps is more
-            reward -= 1.5
+            reward -= 1
 
         # once the number of steps decreases a lot, penalize time more
         # if best_steps <= max_steps / 2:

@@ -1,0 +1,15 @@
+Training with adibyte reward on 100 episodes:
+Best score: 991.0
+Minimum steps: 110
+
+Training time: 1565s, Avg per episode: 15s
+Parameters:
+epsilon: 1.0
+epsilon_min: 0.01
+epsilon_decay: 0.9995
+gamma: 0.95
+batch_size: 64
+lr: 0.002
+memory: 100000
+max_steps: 600
+done_condition: [0.3,0.5]
