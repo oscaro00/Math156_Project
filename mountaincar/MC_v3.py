@@ -1,5 +1,7 @@
 from train import *
 
+from oscar_param_dicts import *
+
 # ask user for reward type. options: original, plus_velocity, human
 reward_type = ""
 while reward_type not in ["original", "plus_velocity", "human", "test", "adibyte"]:
@@ -49,4 +51,4 @@ param_dict = {
     'max_steps': 600 # try 1000
 }
 
-train_dqn(episodes, env, reward_type, param_dict)
+train_dqn(episodes, env, reward_type, param_dict10)

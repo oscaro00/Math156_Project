@@ -1,0 +1,14 @@
+Training with plus_velocity reward on 100 episodes:
+Best score: 223.5
+Minimum steps: 217
+
+Training time: 6526s, Avg per episode: 65s
+Parameters:
+epsilon: 1.0
+epsilon_min: 0.01
+epsilon_decay: 0.9995
+gamma: 0.95
+batch_size: 64
+lr: 0.001
+memory: 100000
+max_steps: 600
