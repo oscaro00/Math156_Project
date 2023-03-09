@@ -59,7 +59,7 @@ def get_reward(state, next_state, reward_type, step, max_steps):
         else:
             import math
             #use tanh to map the value of position&veloicty to [-1,1]
-            reward=-0.2 + 2*(math.tanh(abs(velocity*10)+position)) #it currently performs very bad 
+            reward=-0.2 + 2*(math.tanh(abs(velocity*10)+(position+0.5))) #it currently performs very bad 
         return reward
 
     elif reward_type == "adibyte":
