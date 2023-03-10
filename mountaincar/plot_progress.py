@@ -50,7 +50,7 @@ print(f"Model type: {model_type}")
 mpl.rcParams ["figure.figsize"] = [8, 6]
 
 # dictionary of colors for different model types
-colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red", "test" : "yellow", "adibyte": "orange"}
+colors = {"original" : "blue", "plus_velocity" : "green", "human" : "red", "test" : "purple", "adibyte": "orange"}
 
 # score plot
 fig, ax = plt.subplots()
@@ -75,6 +75,7 @@ plt.close()
 print("Saved the steps plot\n")
 
 # best steps plot
+# comment out if using a previous run
 position = []
 velocity = []
 for step in pickle_data["best_step_data"]:
