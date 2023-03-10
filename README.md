@@ -14,3 +14,7 @@ This folder contains lots of jupyter notebook files used for testing, but it was
 This folder contains the .py files that were used for training the deep Q networks.
 
 Each test that was trained to completion creates a data folder with relevant logs, plots, and model objects.
+
+## Math_156_Project_Report.pdf
+
+Our final project report. Describes motivation, theory, methods, and results of the project.
