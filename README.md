@@ -15,22 +15,17 @@ This folder contains the .py files that were used for training the deep Q networ
 
 Each test that was trained to completion creates a data folder with relevant logs, plots, and model objects.
 
--DQN.py defines the deep q learning class
+- DQN.py defines the deep q learning class
+- MC_v3.py is the main file that trains the models
+- functions.py has the various reward functions and other auxiliary functions
+- jon_train.py is Jonathn's slightly modified train file
+- oscar_param_dicts.py holds hyperparameter variations to use while training
+- plot_progress.py creates the score, step, and phase plots given a model
+- record_model.py creates a video of the mountain car from the resulting model
+- shawn_param.py hold hyperparameter variations to use while training
+- train.py has the code for iterating through steps and updating the necessary values
+- visualizations.ipynb creates the decision space plots for a given model
 
--MC_v3.py is the main file that trains the models
+## Math_156_Project_Report.pdf
 
--functions.py has the various reward functions and other auxiliary functions
-
--jon_train.py is Jonathn's slightly modified train file
-
--oscar_param_dicts.py holds hyperparameter variations to use while training
-
--plot_progress.py creates the score, step, and phase plots given a model
-
--record_model.py creates a video of the mountain car from the resulting model
-
--shawn_param.py hold hyperparameter variations to use while training
-
--train.py has the code for iterating through steps and updating the necessary values
-
--visualizations.ipynb creates the decision space plots for a given model
+Our final project report. Describes motivation, theory, methods, and results of the project.
